@@ -4,12 +4,12 @@ import calendar
 from datetime import datetime
 
 # Path where the input file is located
-path_file = 'calificaciones.JSON'
+path_input_file = 'calificaciones.JSON'
 
 # Read input file
 print ("Reading input file...")
 
-with open(path_file,"r") as input_file:
+with open(path_input_file,"r") as input_file:
     data = json.load(input_file)
 
 # Filter JSON data
@@ -45,9 +45,9 @@ date = date.replace(":", "")
 date = date.replace(".", "")
 date = date.replace(" ", "")
 
-name_output_file = 'calificaciones_'+date+'.JSON'
+path_output_file = 'calificaciones_'+date+'.JSON'
 
-with open(name_output_file, "w") as output_file:
+with open(path_output_file, "w") as output_file:
     json.dump((temp), output_file, indent = 4)
 
 # Ready
