@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #-------------------------------------------------------------------------------------#
 #  			UNIVERSIDAD POLITÉCNICA DE VALENCIA                           #
 #   Program name: filter_geojson. 						      #
