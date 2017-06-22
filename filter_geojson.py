@@ -37,7 +37,8 @@ for feature in data['features']:
         polygon = Polygon(temp)
         point = polygon.envelope.centroid
         feature['geometry']['coordinates'] = [point.x, point.y]
-        result['features'].append(feature) 
+        result['features'].append(feature)
+        del temp[:]
 
 # Write output file
 print('Writting output file...')
