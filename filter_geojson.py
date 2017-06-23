@@ -2,9 +2,14 @@ import json
 import calendar
 from datetime import datetime
 from shapely.geometry import Polygon
+from pyproj import Proj, transform
 
 # Path where the input file is located
 path_input_file = 'calificaciones.JSON'
+
+# Input and output coordinates format
+inpProj = Proj(init='epsg:25830')
+outProj = Proj(init='epsg:3857')
 
 # Read input file
 print ("Reading input file...")
@@ -12,9 +17,12 @@ print ("Reading input file...")
 with open(path_input_file,"r") as input_file:
     data = json.load(input_file)
 
-# Filter JSON data and calculating Polygons centroid
+# Filter JSON data
+# Calculate polygons centroid
+# Transform coordinates format
 print("Filtering JSON data...")
-print("Calculating Polygons centroid...")
+print("Calculating polygons centroid...")
+print("Transforming coordinates format...")
 
 result = {}
 result['type'] = data['type']
@@ -35,10 +43,15 @@ for feature in data['features']:
         for coordinate in feature['geometry']['coordinates'][0]:
             temp.append(tuple(coordinate))
         polygon = Polygon(temp)
-        point = polygon.envelope.centroid
-        feature['geometry']['coordinates'] = [point.x, point.y]
+        point = polygon.envelope.centroid # Calculate polygon centroid
+        x1, y1 = point.x, point.y
+        x2, y2 = transform(inpProj, outProj, x1, y1) # Transform coordinates format
+        feature['geometry']['coordinates'] = [x2, y2]
         result['features'].append(feature)
         del temp[:]
+
+# Change CRS to indicate the new coordinates format 
+result['crs']['properties']['name'] = "urn:ogc:def:crs:EPSG::3857" 
 
 # Write output file
 print('Writting output file...')
@@ -56,4 +69,5 @@ with open(path_output_file, "w") as output_file:
 
 # Ready
 print("Ready")
+
     
