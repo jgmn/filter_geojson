@@ -9,7 +9,7 @@ path_input_file = 'calificaciones.JSON'
 
 # Input and output coordinates format
 inpProj = Proj(init='epsg:25830')
-outProj = Proj(init='epsg:3857')
+outProj = Proj(init='epsg:4326')
 
 # Read input file
 print ("Reading input file...")
@@ -51,7 +51,7 @@ for feature in data['features']:
         del temp[:]
 
 # Change CRS to indicate the new coordinates format 
-result['crs']['properties']['name'] = "urn:ogc:def:crs:EPSG::3857" 
+result['crs']['properties']['name'] = "urn:ogc:def:crs:EPSG::4326" 
 
 # Write output file
 print('Writting output file...')
