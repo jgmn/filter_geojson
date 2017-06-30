@@ -65,7 +65,7 @@ date = date.replace(" ", "")
 path_output_file = 'calificaciones_'+date+'.JSON'
 
 with open(path_output_file, "w") as output_file:
-    json.dump((result), output_file, indent = 4)
+    json.dump((result), output_file, indent = 3)
 
 # Ready
 print("Ready")
