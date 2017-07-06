@@ -29,8 +29,6 @@ result['type'] = data['type']
 result['crs'] = data['crs']
 result['features'] = []
 
-temp = []
-
 for feature in data['features']:
     if ((feature['properties']['califi'] == "EDA" and  feature['properties']['uso'] == "SJL")
         or (feature['properties']['califi'] == "PID")
@@ -40,15 +38,12 @@ for feature in data['features']:
         or (feature['properties']['califi'] == "CHP"  and  feature['properties']['tipoca'] == "134")
         or (feature['properties']['califi'] == "E/SP" and  feature['properties']['tipoca'] == "1P")):
         feature['geometry']['type'] = "Point"
-        for coordinate in feature['geometry']['coordinates'][0]:
-            temp.append(tuple(coordinate))
-        polygon = Polygon(temp)
+        polygon = Polygon(feature['geometry']['coordinates'][0])
         point = polygon.envelope.centroid # Calculate polygon centroid
         x1, y1 = point.x, point.y
         x2, y2 = transform(inpProj, outProj, x1, y1) # Transform coordinates format
         feature['geometry']['coordinates'] = [x2, y2]
         result['features'].append(feature)
-        del temp[:]
 
 # Change CRS to indicate the new coordinates format 
 result['crs']['properties']['name'] = "urn:ogc:def:crs:EPSG::4326" 
