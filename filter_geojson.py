@@ -17,12 +17,8 @@ print ("Reading input file...")
 with open(path_input_file,"r") as input_file:
     data = json.load(input_file)
 
-# Filter JSON data
-# Calculate polygons centroid
-# Transform coordinates format
-print("Filtering JSON data...")
-print("Calculating polygons centroid...")
-print("Transforming coordinates format...")
+# Process JSON data
+print("Processing JSON data...")
 
 result = {}
 result['type'] = data['type']
@@ -38,10 +34,18 @@ for feature in data['features']:
         or (feature['properties']['califi'] == "CHP"  and  feature['properties']['tipoca'] == "134")
         or (feature['properties']['califi'] == "E/SP" and  feature['properties']['tipoca'] == "1P")):
         feature['geometry']['type'] = "Point"
+        # Delete data that we don't need
+        del feature['properties']['clase']
+        del feature['properties']['tipouso']
+        del feature['properties']['origen']
+        del feature['properties']['ficha_es']
+        del feature['properties']['ficha_va']
         polygon = Polygon(feature['geometry']['coordinates'][0])
-        point = polygon.envelope.centroid # Calculate polygon centroid
+        # Calculate polygon centroid
+        point = polygon.envelope.centroid 
         x1, y1 = point.x, point.y
-        x2, y2 = transform(inpProj, outProj, x1, y1) # Transform coordinates format
+        # Transform coordinates format
+        x2, y2 = transform(inpProj, outProj, x1, y1) 
         feature['geometry']['coordinates'] = [x2, y2]
         result['features'].append(feature)
 
