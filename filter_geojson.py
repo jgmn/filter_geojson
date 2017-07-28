@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+"""
+@author: J. Gerardo Moreno N.
+"""
 import json
 from datetime import datetime
 from shapely.geometry import Polygon
